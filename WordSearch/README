@@ -1,0 +1,12 @@
+Word Search Generator
+Originally written January 29, 2025
+
+This is currently nothing to brag about; it is minimally functional.
+make, then ./wordsearch to run.
+Takes two potential args; grid size (always square), then however many words.
+
+
+Want:
+    --Help|-h
+    --xray|x (No random letters, just generated words)
+    fix randomization to be more 'random'.

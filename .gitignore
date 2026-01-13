@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# C/C++ executables; will try and standardize putting these in a bin folder.
+*/bin/*
+*/build/*
