@@ -12,7 +12,7 @@
 // Passes for attempting random placement of words before resorting to
 // sequential placement
 #define DEFAULT_RAND_ATTEMPTS \
-    5000  // bigger number will result in lower performance, obviously
+    50000  // bigger number will result in lower performance, obviously
 
 // globally storing table with maximum size
 char table[MAX_SIZE][MAX_SIZE];
@@ -23,6 +23,10 @@ uint32_t wordidxList[MAX_SIZE * MAX_SIZE];
 // store the inputed size of the square table.
 uint32_t size, rand_attempts;
 uint8_t xray_enable;
+
+typedef int (*insert_func_t)(int, int, char[]);
+
+insert_func_t funcs[4];  // array of insertion functions
 
 void usage(const char* s) {
     fprintf(stderr,
@@ -62,12 +66,16 @@ void printTable(char table[MAX_SIZE][MAX_SIZE]) {
     }
 }
 
-// Array of the 4 placement methods given, and randomizes their order.
-// int shuffle_platmpt_order(int *place_fn_ptr_arr(int, int, char[])[]){
-// //    I have to come back to this.
+// Randomizes order of array of 4 insertion functions.
+void shuffle_insert_funcs(insert_func_t funcs[], size_t n) {
+    for (size_t i = n - 1; i > 0; i--) {
+        size_t j = rand() % (i + 1);
 
-//     return NULL;
-// }
+        insert_func_t tmp = funcs[i];
+        funcs[i] = funcs[j];
+        funcs[j] = tmp;
+    }
+}
 
 // Attempts directly forward word placement; 0 if success, 1 if fail
 // row, col to attempt from taken as input
@@ -192,47 +200,20 @@ int insertWord(char word[]) {
     // noting: Max size is 20. There are 4 directions to go. 20*20*4 = 1600
     // possible orientations, per word. That's a lot.
     int r, c;  // specific spot to try and put a character
-    int i;     // loop control
+    int i, j;  // loop control
 
-    // store result from call to insertion methods; used for randomizing which
-    // to use
-    int f, d, diagu, diagd = 2;  // 2 as a default state
-    int temp;  // used to randomize which of the insertion methods to call in
-               // inner loops
+    // Shuffle placement function order
+    shuffle_insert_funcs(funcs, 4);
 
     // attempting random position
     for (i = 0; i < rand_attempts; i++) {
         // randomize location to attempt from
         r = rand() % size;
         c = rand() % size;
-        // now attempt the 4 positions; will randomize until all 4 have been
-        // attempted
-        while (f != 1 || d != 1 || diagu != 1 || diagd != 1) {
-            // randomizing the direction; I assume there is a better way to do
-            // this
-            temp = rand() % 4;
-            if (temp == 0) {
-                f = forwardInsert(r, c, word);  // attempt forward insertion
-                if (f == 0) {
-                    return 0;  // success, return
-                }
-            } else if (temp == 1) {
-                d = downwardInsert(r, c, word);  // attempt downward insertion
-                if (d == 0) {
-                    return 0;  // success, return
-                }
-            } else if (temp == 2) {
-                diagu = diagUpInsert(
-                    r, c, word);  // attempt diagonal upward insertion
-                if (diagu == 0) {
-                    return 0;  // success, return
-                }
-            } else {
-                diagd = diagDownInsert(
-                    r, c, word);  // attempt diagonal downward insertion
-                if (diagd == 0) {
-                    return 0;  // success, return
-                }
+        // Rotate through 4 insertion functions in array
+        for (j = 0; j < 4; j++) {
+            if (funcs[j](r, c, word) == 0) {
+                return 0;  // success
             }
         }
     }
@@ -241,15 +222,11 @@ int insertWord(char word[]) {
     // directions. this is purely sequential, so no randomness is done here.
     for (r = 0; r < size; r++) {
         for (c = 0; c < size; c++) {
-            // attempt the 4 possible directions from this point
-            if (forwardInsert(r, c, word) == 0) {
-                return 0;  // success, return
-            } else if (downwardInsert(r, c, word) == 0) {
-                return 0;  // success, return
-            } else if (diagUpInsert(r, c, word) == 0) {
-                return 0;  // success, return
-            } else if (diagDownInsert(r, c, word) == 0) {
-                return 0;  // success, return
+            for (j = 0; j < 4; j++) {
+                // rotate through 4 insertion functions
+                if (funcs[j](r, c, word) == 0) {
+                    return 0;  // success
+                }
             }
         }
     }
@@ -277,6 +254,11 @@ int main(int argc, char* argv[]) {
     xray_enable = 0;
     size = DEFAULT_SIZE;
     rand_attempts = DEFAULT_RAND_ATTEMPTS;
+    // Populate array of insertion functions
+    funcs[0] = forwardInsert; 
+    funcs[1] = downwardInsert; 
+    funcs[2] = diagDownInsert; 
+    funcs[3] = diagUpInsert;
 
     srand(time(NULL));
 
@@ -340,7 +322,6 @@ int main(int argc, char* argv[]) {
     // print table to console
     printTable(table);
     printf("============================================================\n");
-
 
     // this is going to look confusing. Again, I wrote this with the intention
     // of not terminating on a word fitment failure.

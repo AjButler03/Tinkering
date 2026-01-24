@@ -1,12 +1,14 @@
 Word Search Generator
 Originally written January 29, 2025
+Tinkered with January 2026
 
-This is currently nothing to brag about; it is minimally functional.
-make, then ./wordsearch to run.
-Takes two potential args; grid size (always square), then however many words.
+make, then ./bin/wordsearch to run.
 
+Options:
+    --help|-h
+    --xray|x
+    --size|s <width/height>
+    --rand_attempts|r <number>
 
-Want:
-    --Help|-h
-    --xray|x (No random letters, just generated words)
-    fix randomization to be more 'random'.
+Words to be inserted are any other argument on the command line, which 
+may lead to some unexpected behavior.
