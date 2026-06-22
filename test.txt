@@ -1,0 +1,8 @@
+Hello from Ubuntu
+
+This is simply a test file to play around with getting git working on my Ubuntu install.
+I have experience with the linux terminal, but not as the primary installed OS or desktop environment.
+So, I am in the process of trying it out and getting myself familiar. As a part of that,
+I need to get more acquanted with using git through the terminal instead of with the github desktop client (which doesn't appear to exist here)
+
+I am writing this to have some sort of change to commit, and to verify that I my credentials set up correctly.
