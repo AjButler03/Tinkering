@@ -1,7 +1,7 @@
 all: wordsearch
 
-wordsearch: wordsearch.c
-	gcc wordsearch.c -o bin/wordsearch -Wall -Werror
+wordsearch: wordSearch.c
+	gcc wordSearch.c -o wordsearch -Wall -Werror
 	
 clean:
 	rm -f wordsearch test *~

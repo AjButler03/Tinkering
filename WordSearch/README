@@ -2,7 +2,7 @@ Word Search Generator
 Originally written January 29, 2025
 Tinkered with January 2026
 
-make, then ./bin/wordsearch to run.
+make, then ./wordsearch to run.
 
 Options:
     --help|-h
