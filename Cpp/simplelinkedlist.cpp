@@ -1,7 +1,7 @@
 #include <iostream>
 
-
 // This is very simple int linked list class defintion.
+// very much so not complete or optimal, but basic structure is here.
 
 // datatype to form structure of linked list
 // We'll through in both a next and a previous for funsies
@@ -106,8 +106,6 @@ int main(int argc, char* argv[]) {
     ll.insert(3);
 
     std::cout << ll << "\n";
-
-
 
     return 0;
 }
