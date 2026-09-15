@@ -76,13 +76,18 @@ void printvector(vector<int>& arr) {
 }
 
 int main(int argc, char* argv[]) {
-    vector<int> arr = {2, 6, 8, 3, -5, 9, 1, 0, 12, 15, -2, 7, -2, 7};
-    cout << "Array start: ";
-    printvector(arr);
-    reverseArray(arr);
-    cout << "Array after: ";
-    printvector(arr);
-    cout << "Min: " << findmin(arr) << " Max: " << findmax(arr) << "\n";
-    rmdups(arr);
-    printvector(arr);
+    // vector<int> arr = {2, 6, 8, 3, -5, 9, 1, 0, 12, 15, -2, 7, -2, 7};
+    // cout << "Array start: ";
+    // printvector(arr);
+    // reverseArray(arr);
+    // cout << "Array after: ";
+    // printvector(arr);
+    // cout << "Min: " << findmin(arr) << " Max: " << findmax(arr) << "\n";
+    // rmdups(arr);
+    // printvector(arr);
+
+    // little arg passing
+    for (int i = 0; i < argc; i++){
+        cout << argv[i] << "\n";
+    }
 }
