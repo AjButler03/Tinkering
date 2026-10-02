@@ -1,6 +1,8 @@
 #include <iostream>
 #include <set>
 #include <vector>
+#include <cstdint>
+#include <bitset>
 
 using namespace std;
 
@@ -75,6 +77,20 @@ void printvector(vector<int>& arr) {
     std::cout << "\n";
 }
 
+// Reverses the bits of an unsigned 32-bit integer.
+uint32_t reversebits(uint32_t x) {
+    uint32_t reverse = 0;
+    for (int i = 0; i < 32; i++){
+        // shift reverse left to make room for new int,
+        // then use or (|) to extract last bit from x
+        reverse = (reverse << 1) | (x & 1);
+
+        // shift x right to 'remove' processed bit
+        x = x >> 1;
+    }
+    return reverse;
+}
+
 int main(int argc, char* argv[]) {
     // vector<int> arr = {2, 6, 8, 3, -5, 9, 1, 0, 12, 15, -2, 7, -2, 7};
     // cout << "Array start: ";
@@ -86,8 +102,19 @@ int main(int argc, char* argv[]) {
     // rmdups(arr);
     // printvector(arr);
 
-    // little arg passing
-    for (int i = 0; i < argc; i++){
-        cout << argv[i] << "\n";
-    }
+    // // little arg passing
+    // for (int i = 0; i < argc; i++){
+    //     cout << argv[i] << "\n";
+    // }
+
+    uint32_t x = 43261596;
+
+    std::cout << std::bitset<32>(x);
+    std::cout << " (" << x << ")\n";
+    uint32_t result = reversebits(x);
+    std::cout << std::bitset<32>(reversebits(x));
+    std::cout << " (" << result << ")\n";
+
+
+    return 0;
 }
